@@ -11,10 +11,10 @@ authRouter.post("/register", [isBodyEmpty, validateBody(authRegisterSchema)], au
 
 authRouter.post("/login", [isBodyEmpty, validateBody(authLoginSchema)], authController.login);
 
-authRouter.get("/logout", [authorize], authController.logout);
+authRouter.post("/logout", [authorize], authController.logout);
 
 authRouter.get("/current", [authorize], authController.current);
 
-authRouter.patch("", [authorize, isBodyEmpty, validateBody(authSubscriptionSchema)], authController.updateSubscription);
+authRouter.patch("/", [authorize, isBodyEmpty, validateBody(authSubscriptionSchema)], authController.updateSubscription);
 
 export default authRouter;
