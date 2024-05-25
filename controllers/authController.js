@@ -3,6 +3,7 @@ import controllerWrapper from "../decorators/controllerWrapper.js";
 import HttpError from "../helpers/HttpError.js";
 import * as userService from "../services/userServices.js";
 import { createToken } from "../helpers/jwt.js";
+import gravatar from "gravatar";
 
 export const register = async (req, res) => {
   const { email } = req.body;
@@ -11,13 +12,20 @@ export const register = async (req, res) => {
     throw HttpError(409, "Email in use");
   }
 
-  const newUser = await userService.saveUser(req.body);
+  const avatarURL = gravatar.url(email, { s: "200", d: "mp" });
+
+  const body = {
+    ...req.body,
+    avatarURL,
+  };
+
+  const newUser = await userService.saveUser(body);
 
   res.status(201).json({
-   user:{
-    email: newUser.email,
-    subscription: newUser.subscription,
-   }
+    user: {
+      email: newUser.email,
+      subscription: newUser.subscription,
+    },
   });
 };
 
@@ -51,23 +59,9 @@ export const current = async (req, res) => {
   res.json({ email, subscription });
 };
 
-export const updateSubscription = async (req, res) => {
-  const { id } = req.user;
-  const { subscription } = req.body;
-
-  const updatedUser = await userService.updateUser({ _id: id }, { subscription });
-
-  res.json({
-    _id: updatedUser._id,
-    email: updatedUser.email,
-    subscription: updatedUser.subscription,
-  });
-};
-
 export default {
   register: controllerWrapper(register),
   login: controllerWrapper(login),
   logout: controllerWrapper(logout),
   current: controllerWrapper(current),
-  updateSubscription: controllerWrapper(updateSubscription),
 };
