@@ -41,4 +41,6 @@ userSchema.pre("findOneAndUpdate", setUpdateSettings);
 
 const User = model("user", userSchema);
 
+User.createIndexes();
+
 export default User;

@@ -9,7 +9,6 @@ const storage = multer.diskStorage({
 
   filename: function (req, file, callback) {
     const uniquePrefix = `${Date.now()}_${Math.round(Math.random() * 1e9)}`;
-    console.log(file);
     callback(null, `${uniquePrefix}_${file.originalname}`);
   },
 });
