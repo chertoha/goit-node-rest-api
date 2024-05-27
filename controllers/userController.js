@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import controllerWrapper from "../decorators/controllerWrapper.js";
 import * as userService from "../services/userServices.js";
 import { resizeAvatar } from "../utils/transformAvatar.js";
+import HttpError from "../helpers/HttpError.js";
 
 const publicFolder = path.resolve("public");
 
@@ -20,6 +21,10 @@ export const updateSubscription = async (req, res) => {
 };
 
 export const updateUserAvatar = async (req, res) => {
+  if (!req.file) {
+    throw HttpError(400, "No file");
+  }
+
   const { id } = req.user;
   const { path: oldPath, filename } = req.file;
 
