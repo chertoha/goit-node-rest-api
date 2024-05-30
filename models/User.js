@@ -27,6 +27,10 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+
+    avatarURL: {
+      type: String,
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -36,5 +40,7 @@ userSchema.post("findOneAndUpdate", handleSaveError);
 userSchema.pre("findOneAndUpdate", setUpdateSettings);
 
 const User = model("user", userSchema);
+
+User.createIndexes();
 
 export default User;
