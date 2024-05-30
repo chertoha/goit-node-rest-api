@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import router from "./routes/index.js";
-
+import sendMail from "./helpers/sendMail.js";
 import "dotenv/config";
 
 const app = express();
